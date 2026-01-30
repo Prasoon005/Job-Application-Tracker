@@ -7,94 +7,79 @@
 
 body {
   min-height: 100vh;
-  background: #0b0f1a;
-  color: #e5e7eb;
-  overflow: hidden;
+  background: linear-gradient(135deg, #4facfe, #8f5cff);
+  color: white;
 }
 
-/* Glow blobs */
-.glow {
-  position: absolute;
-  width: 500px;
-  height: 500px;
-  filter: blur(120px);
-  z-index: 0;
+/* MAIN SECTION */
+.landing {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 80px;
+  height: 100vh;
 }
 
-.glow.one {
-  top: -150px;
-  left: -150px;
-  background: radial-gradient(circle, rgba(109,93,252,0.6), transparent 60%);
+/* LEFT TEXT */
+.content {
+  max-width: 480px;
 }
 
-.glow.two {
-  bottom: -150px;
-  right: -150px;
-  background: radial-gradient(circle, rgba(59,130,246,0.6), transparent 60%);
-}
-
-/* Hero Section */
-.hero {
-  position: relative;
-  z-index: 1;
-  max-width: 800px;
-  margin: auto;
-  padding-top: 120px;
-  text-align: center;
-}
-
-.logo {
-  letter-spacing: 2px;
-  font-size: 14px;
-  color: #9ca3af;
-  margin-bottom: 20px;
-}
-
-.hero h2 {
+.content h1 {
   font-size: 48px;
   font-weight: 700;
   line-height: 1.2;
 }
 
-.hero h2 span {
-  color: #6d5dfc;
-}
-
-.hero p {
-  margin-top: 20px;
-  color: #cbd5f5;
-  line-height: 1.6;
-}
-
-.features {
-  list-style: none;
-  margin: 30px 0;
-}
-
-.features li {
-  margin: 8px 0;
-  color: #e5e7eb;
+.content p {
+  margin: 20px 0;
+  font-size: 16px;
+  opacity: 0.9;
 }
 
 .cta {
   margin-top: 20px;
-  padding: 14px 34px;
+  padding: 14px 32px;
   border-radius: 30px;
   border: none;
-  background: linear-gradient(135deg, #6d5dfc, #3b82f6);
-  color: white;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  background: rgba(255,255,255,0.2);
+  color: white;
+  backdrop-filter: blur(10px);
 }
 
-.cta:hover {
-  transform: scale(1.05);
+/* RIGHT VISUAL */
+.visual {
+  position: relative;
+  width: 420px;
 }
 
-.trusted {
-  margin-top: 25px;
+.card {
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.card h3 {
+  font-size: 18px;
+}
+
+.card span {
   font-size: 14px;
-  color: #9ca3af;
+  opacity: 0.85;
 }
+
+.status {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.applied { color: #bbf7d0; }
+.interview { color: #fde68a; }
+.rejected { color: #fecaca; }
