@@ -7,79 +7,167 @@
 
 body {
   min-height: 100vh;
-  background: linear-gradient(135deg, #4facfe, #8f5cff);
-  color: white;
+  background: #0b0f1a;
+  color: #e5e7eb;
+  overflow: hidden;
 }
 
-/* MAIN SECTION */
-.landing {
+/* =========================
+   BACKGROUND GLOW EFFECTS
+========================= */
+.glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  filter: blur(140px);
+  opacity: 0.55;
+  z-index: 0;
+}
+
+.glow.purple {
+  top: -200px;
+  left: -200px;
+  background: radial-gradient(circle, #6d5dfc, transparent 60%);
+}
+
+.glow.blue {
+  bottom: -200px;
+  right: -200px;
+  background: radial-gradient(circle, #3b82f6, transparent 60%);
+}
+
+/* =========================
+   MAIN GLASS CONTAINER
+========================= */
+.hero-glass {
+  position: relative;
+  z-index: 1;
+
+  max-width: 1200px;
+  margin: 80px auto;
+  padding: 80px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 80px;
-  height: 100vh;
+  gap: 80px;
+
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(25px);
+  border-radius: 32px;
+  border: 1px solid rgba(255,255,255,0.15);
+
+  box-shadow: 0 40px 80px rgba(0,0,0,0.45);
 }
 
-/* LEFT TEXT */
-.content {
+/* =========================
+   LEFT TEXT
+========================= */
+.hero-text {
   max-width: 480px;
 }
 
-.content h1 {
-  font-size: 48px;
-  font-weight: 700;
-  line-height: 1.2;
+.tag {
+  color: #9ca3af;
+  letter-spacing: 2px;
+  font-size: 12px;
 }
 
-.content p {
-  margin: 20px 0;
-  font-size: 16px;
-  opacity: 0.9;
+.hero-text h1 {
+  margin-top: 20px;
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1.15;
 }
 
+.hero-text h1 span {
+  color: #6d5dfc;
+}
+
+.hero-text p {
+  margin: 22px 0;
+  color: #cbd5f5;
+  line-height: 1.6;
+}
+
+.hero-text ul {
+  list-style: none;
+  margin: 24px 0;
+}
+
+.hero-text li {
+  margin: 10px 0;
+}
+
+/* =========================
+   CTA BUTTON
+========================= */
 .cta {
   margin-top: 20px;
-  padding: 14px 32px;
+  padding: 14px 36px;
   border-radius: 30px;
   border: none;
-  font-size: 16px;
-  font-weight: 600;
   cursor: pointer;
-  background: rgba(255,255,255,0.2);
+
+  background: linear-gradient(135deg, #6d5dfc, #3b82f6);
   color: white;
-  backdrop-filter: blur(10px);
-}
-
-/* RIGHT VISUAL */
-.visual {
-  position: relative;
-  width: 420px;
-}
-
-.card {
-  background: rgba(255,255,255,0.18);
-  backdrop-filter: blur(20px);
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-}
-
-.card h3 {
-  font-size: 18px;
-}
-
-.card span {
-  font-size: 14px;
-  opacity: 0.85;
-}
-
-.status {
-  margin-top: 10px;
-  font-size: 13px;
   font-weight: 600;
+  font-size: 15px;
+
+  box-shadow: 0 15px 40px rgba(0,0,0,0.4);
 }
 
-.applied { color: #bbf7d0; }
-.interview { color: #fde68a; }
-.rejected { color: #fecaca; }
+/* =========================
+   RIGHT IMAGE (MERGED)
+========================= */
+.hero-visual {
+  position: relative;
+  width: 520px;
+  flex-shrink: 0;
+}
+
+.hero-visual img {
+  width: 100%;
+  border-radius: 28px;
+
+  /* glass feel */
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(25px);
+
+  /* depth + glow */
+  box-shadow:
+    0 40px 80px rgba(0,0,0,0.6),
+    0 0 60px rgba(109,93,252,0.45),
+    0 0 90px rgba(59,130,246,0.35);
+
+  /* merge edges */
+  mask-image: radial-gradient(
+    circle at center,
+    rgba(0,0,0,1) 65%,
+    rgba(0,0,0,0) 100%
+  );
+}
+
+/* halo glow behind image */
+.hero-visual::before {
+  content: "";
+  position: absolute;
+  inset: -60px;
+  background: radial-gradient(circle, #6d5dfc55, transparent 65%);
+  filter: blur(90px);
+  z-index: -1;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 900px) {
+  .hero-glass {
+    flex-direction: column;
+    padding: 50px;
+  }
+
+  .hero-visual {
+    width: 100%;
+  }
+}

@@ -3,45 +3,46 @@
 <head>
   <meta charset="UTF-8" />
   <title>Job Tracker</title>
+
   <link rel="stylesheet" href="CSS/style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <section class="landing">
+  <!-- Background glows -->
+  <div class="glow purple"></div>
+  <div class="glow blue"></div>
+
+  <!-- Hero Section -->
+  <section class="hero-glass">
 
     <!-- LEFT CONTENT -->
-    <div class="content">
-      <h1>Organize & Track<br>Your Job Applications</h1>
+    <div class="hero-text">
+      <span class="tag">JOB TRACKER</span>
+
+      <h1>
+        Track, Organize, and<br />
+        <span>Optimize</span> Your Job Search
+      </h1>
 
       <p>
-        Manage all your job applications in one place.
-        Stay organized, track your progress, and land
-        your dream job faster.
+        Forget spreadsheets and endless bookmarks.
+        Save, apply, track, and revisit job applications —
+        all from one streamlined dashboard.
       </p>
 
-      <button class="cta">Get Started</button>
+      <ul>
+        <li>✔ Centralized Job Tracking</li>
+        <li>✔ Track Key Contacts</li>
+        <li>✔ Job Insights</li>
+      </ul>
+
+      <button class="cta">START TRACKING</button>
     </div>
 
     <!-- RIGHT VISUAL -->
-    <div class="visual">
-      <div class="card">
-        <h3>Apple</h3>
-        <span>Software Engineer</span>
-        <p class="status applied">Applied</p>
-      </div>
-
-      <div class="card">
-        <h3>Google</h3>
-        <span>UX Designer</span>
-        <p class="status interview">Interview</p>
-      </div>
-
-      <div class="card">
-        <h3>Microsoft</h3>
-        <span>Backend Engineer</span>
-        <p class="status rejected">Rejected</p>
-      </div>
+    <div class="hero-visual">
+      <img src="assets/career-path.png" alt="Career Path Dashboard" />
     </div>
 
   </section>
