@@ -2,12 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Login | JobTracker</title>
+  <title>Login | Ascend</title>
   <link rel="stylesheet" href="CSS/style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
+
 <body class="auth-body">
 
+  <!-- Brand -->
+  <header class="page-header">
+    <a href="index.html" class="brand corner-brand">
+      <img src="assets/logo.png" alt="Ascend Logo" class="brand-logo" />
+      <div class="brand-text">
+        <span class="brand-name">Ascend</span>
+        <span class="brand-tagline">Track. Apply. Ascend.</span>
+      </div>
+    </a>
+  </header>
 
   <!-- Background glow -->
   <div class="glow purple"></div>
@@ -16,41 +27,52 @@
   <div class="auth-wrapper">
     <div class="auth-layout">
 
-  <!-- LEFT WELCOME -->
-  <div class="auth-info">
-    <h1>Welcome Back 👋</h1>
-    <p>
-      Track your job applications, interviews,
-      and progress — all in one place.
-    </p>
-  </div>
+      <!-- LEFT INFO -->
+      <div class="auth-info">
+        <span class="auth-tag">CAREER DASHBOARD</span>
 
-  <!-- RIGHT FORM -->
-  <div class="auth-card">
-    <h2>Login</h2>
+        <h1>Your career journey<br>continues ...</h1>
 
-    <form>
-      <div class="input-group">
-        <input type="email" required />
-        <label>Email</label>
+        <p>
+          Log in to Ascend and stay on top of your applications,
+          interviews, and offers — all organized in one place.
+        </p>
+
+        <span class="auth-micro">
+          Every application tracked. Every opportunity closer.
+        </span>
       </div>
 
-      <div class="input-group">
-        <input type="password" required />
-        <label>Password</label>
+      <!-- RIGHT FORM -->
+      <div class="auth-card">
+        <h2>Welcome back</h2>
+        <p class="hint">Log in to continue ascending</p>
+
+        <form>
+          <div class="input-group">
+            <input type="email" required />
+            <label>Email</label>
+          </div>
+
+          <div class="input-group">
+            <input type="password" required />
+            <label>Password</label>
+          </div>
+
+          <button class="cta full">Login</button>
+        </form>
+
+        <span class="auth-link">
+          Don’t have an account?
+          <a href="signup.html">Sign up</a>
+        </span>
+
+        <span class="auth-micro small">
+          🔒 Your data stays private & secure
+        </span>
       </div>
 
-      <button class="cta full">Login</button>
-    </form>
-
-    <span class="auth-link">
-      Don’t have an account?
-      <a href="signup.html">Sign up</a>
-    </span>
-  </div>
-
-</div>
-
+    </div>
   </div>
 
 </body>

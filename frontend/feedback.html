@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Feedback | JobTracker</title>
+  <link rel="stylesheet" href="CSS/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="feedback-body">
+   <header class="page-header">
+  <a href="index.html" class="brand corner-brand">
+    <img src="assets/logo.png" alt="Ascend Logo" class="brand-logo" />
+    <div class="brand-text">
+      <span class="brand-name">Ascend</span>
+      <span class="brand-tagline">Track. Apply. Ascend.</span>
+    </div>
+  </a>
+</header>
+
+
+  <!-- Glow -->
+  <div class="glow purple"></div>
+  <div class="glow blue"></div>
+
+  <section class="feedback-page">
+
+    <!-- HEADER -->
+    <div class="feedback-header">
+      <h1>Share Your Feedback </h1>
+      <p>
+        Help others by sharing your interview experience
+        or suggest improvements for our platform.
+      </p>
+    </div>
+
+    <!-- FORM -->
+    <div class="feedback-form glass">
+
+      <form>
+
+        <div class="form-row">
+          <label>Feedback Type</label>
+          <select>
+            <option>Interview Experience</option>
+            <option>Website Feedback</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label>Your Role / Position</label>
+          <input type="text" placeholder="Backend Developer / Data Analyst" />
+        </div>
+
+        <div class="form-row">
+          <label>Company (optional)</label>
+          <input type="text" placeholder="Google / Amazon / Startup" />
+        </div>
+
+        <div class="form-row">
+          <label>Outcome</label>
+          <select>
+            <option>Selected</option>
+            <option>Rejected</option>
+            <option>In Progress</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label>Your Feedback</label>
+          <textarea rows="4" placeholder="Share your experience or suggestions..."></textarea>
+        </div>
+
+        <button class="cta full">Submit Feedback</button>
+
+      </form>
+
+    </div>
+
+    <!-- DISPLAY FEEDBACK -->
+    <div class="feedback-list">
+
+      <h2>Recent Feedbacks</h2>
+
+      <div class="feedback-card">
+        <p>
+          “Interview had 2 technical rounds focusing on DSA and backend concepts.
+          Tracking notes helped me improve.”
+        </p>
+        <span>Backend Developer · Selected</span>
+      </div>
+
+      <div class="feedback-card">
+        <p>
+          “The UI is clean and easy to use. Would love a calendar reminder feature.”
+        </p>
+        <span>Frontend Intern · Website Feedback</span>
+      </div>
+
+    </div>
+
+  </section>
+
+</body>
+</html>

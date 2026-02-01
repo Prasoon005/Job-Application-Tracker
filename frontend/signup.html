@@ -2,12 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Sign Up | JobTracker</title>
+  <title>Sign Up | Ascend</title>
   <link rel="stylesheet" href="CSS/style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
+
 <body class="auth-body">
 
+  <!-- Brand -->
+  <header class="page-header">
+    <a href="index.html" class="brand corner-brand">
+      <img src="assets/logo.png" alt="Ascend Logo" class="brand-logo" />
+      <div class="brand-text">
+        <span class="brand-name">Ascend</span>
+        <span class="brand-tagline">Track. Apply. Ascend.</span>
+      </div>
+    </a>
+  </header>
 
   <!-- Background glow -->
   <div class="glow purple"></div>
@@ -16,50 +27,62 @@
   <div class="auth-wrapper">
     <div class="auth-layout">
 
-  <!-- LEFT WELCOME -->
-  <div class="auth-info">
-    <h1>Start Your Journey 🚀</h1>
-    <p>
-      Create an account to organize your job search,
-      track interviews, and improve your chances.
-    </p>
-  </div>
+      <!-- LEFT INFO -->
+      <div class="auth-info">
+        <span class="auth-tag">SMART JOB TRACKING</span>
 
-  <!-- RIGHT FORM -->
-  <div class="auth-card">
-    <h2>Create Account</h2>
+        <h1>Don’t just apply.<br>Win offers !!</h1>
 
-    <form>
-      <div class="input-group">
-        <input type="text" required />
-        <label>Full Name</label>
+        <p>
+          Create your Ascend account and manage applications,
+          interviews, and progress — without messy spreadsheets
+          or missed follow-ups.
+        </p>
+
+        <span class="auth-micro">
+          Join focused candidates who track smarter and grow faster.
+        </span>
       </div>
 
-      <div class="input-group">
-        <input type="email" required />
-        <label>Email</label>
+      <!-- RIGHT FORM -->
+      <div class="auth-card">
+        <h2>Create your account</h2>
+        <p class="hint">It takes less than a minute</p>
+
+        <form>
+          <div class="input-group">
+            <input type="text" required />
+            <label>Full Name</label>
+          </div>
+
+          <div class="input-group">
+            <input type="email" required />
+            <label>Email</label>
+          </div>
+
+          <div class="input-group">
+            <input type="password" required />
+            <label>Password</label>
+          </div>
+
+          <small class="hint">
+            Use a strong password (minimum 8 characters)
+          </small>
+
+          <button class="cta full">Sign Up</button>
+        </form>
+
+        <span class="auth-link">
+          Already have an account?
+          <a href="login.html">Login</a>
+        </span>
+
+        <span class="auth-micro small">
+          🔒 No spam. Your data stays private.
+        </span>
       </div>
 
-      <div class="input-group">
-        <input type="password" required />
-        <label>Password</label>
-      </div>
-
-      <small class="hint">
-        Use a strong password (min 8 characters)
-      </small>
-
-      <button class="cta full">Sign Up</button>
-    </form>
-
-    <span class="auth-link">
-      Already have an account?
-      <a href="login.html">Login</a>
-    </span>
-  </div>
-
-</div>
-
+    </div>
   </div>
 
 </body>

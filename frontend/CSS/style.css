@@ -486,6 +486,13 @@ body {
   overflow: hidden;
 }
 
+/* Allow scroll on feedback page */
+.feedback-body {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-top: 60px; /* navbar ke liye space */
+}
+
 /* Layout */
 .auth-layout {
   min-height: 100vh;
@@ -623,5 +630,285 @@ body {
 @media (max-width: 900px) {
   .feedback-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* =========================
+   FEEDBACK PAGE
+========================= */
+
+.feedback-page {
+  max-width: 900px;
+  margin: auto;
+  padding: 0px 20px;
+}
+
+/* Header */
+.feedback-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.feedback-header h1 {
+  font-size: 38px;
+  font-weight: 800;
+}
+
+.feedback-header p {
+  color: #cbd5f5;
+  max-width: 600px;
+  margin: 10px auto 0;
+}
+
+/* Glass card */
+.glass {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(22px);
+  border-radius: 24px;
+  padding: 32px;
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+}
+
+/* Form */
+.feedback-form {
+  margin-bottom: 80px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+.form-row label {
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: #9ca3af;
+}
+/* Fix select dropdown visibility */
+.form-row select {
+  appearance: none;
+  background-color: #0b0f1a;
+  color: #e5e7eb;
+  cursor: pointer;
+}
+
+/* Dropdown options */
+.form-row select option {
+  background-color: #0b0f1a;
+  color: #e5e7eb;
+}
+
+.form-row input,
+.form-row select,
+.form-row textarea {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+  padding: 12px;
+  color: rgb(255, 255, 255);
+  font-size: 14px;
+}
+
+/* Feedback list */
+.feedback-list h2 {
+  margin-bottom: 24px;
+}
+
+.feedback-card {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(18px);
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.feedback-card p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.feedback-card span {
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+
+/* =========================
+   ASCEND BRAND (LOGO)
+========================= */
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  color: white;
+}
+
+/* Logo tuned for wide shape */
+.brand-logo {
+  height: 34px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 12px rgba(109,93,252,0.4));
+}
+
+/* Text */
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.brand-name {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.brand-tagline {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+/* Hover effect */
+.brand:hover .brand-name {
+  color: #6d5dfc;
+}
+
+.brand:hover .brand-logo {
+  filter: drop-shadow(0 0 18px rgba(109,93,252,0.7));
+}
+
+.brand-logo,
+.brand-name {
+  transition: all 0.3s ease;
+}
+.brand {
+  cursor: pointer;
+}
+
+/* =========================
+   TOP CORNER BRAND
+========================= */
+
+.page-header {
+  position: fixed;
+  top: 24px;
+  left: 32px;
+  z-index: 1000;
+}
+
+/* Reuse existing brand styles */
+.corner-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: white;
+}
+
+.corner-brand .brand-logo {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 12px rgba(109,93,252,0.4));
+}
+
+.corner-brand .brand-name {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.corner-brand .brand-tagline {
+  font-size: 10px;
+  color: #9ca3af;
+}
+
+/* Hover effect */
+.corner-brand:hover .brand-name {
+  color: #6d5dfc;
+}
+
+.corner-brand:hover .brand-logo {
+  filter: drop-shadow(0 0 18px rgba(109,93,252,0.7));
+}
+
+/* Smooth feel */
+.corner-brand * {
+  transition: all 0.3s ease;
+}
+
+/* =========================
+   AUTH PAGE ENHANCEMENTS
+========================= */
+
+/* Left section polish */
+.auth-info {
+  position: relative;
+}
+
+.auth-tag {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #9ca3af;
+  margin-bottom: 18px;
+}
+
+/* Headline stronger */
+.auth-info h1 {
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 18px;
+}
+
+/* Paragraph clarity */
+.auth-info p {
+  font-size: 16px;
+  color: #cbd5f5;
+  max-width: 460px;
+  line-height: 1.7;
+}
+
+/* Micro copy */
+.auth-micro {
+  display: block;
+  margin-top: 26px;
+  font-size: 14px;
+  color: #9ca3af;
+  opacity: 0.9;
+}
+
+.auth-micro.small {
+  font-size: 12px;
+  margin-top: 18px;
+}
+
+/* Card heading spacing */
+.auth-card h2 {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+/* Slight lift on card */
+.auth-card {
+  transform: translateY(-10px);
+}
+
+/* Mobile refinement */
+@media (max-width: 900px) {
+  .auth-info h1 {
+    font-size: 36px;
+  }
+
+  .auth-info p {
+    font-size: 15px;
   }
 }
