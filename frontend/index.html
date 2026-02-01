@@ -8,6 +8,37 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+  <!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-left">
+    <span class="logo">JobTracker</span>
+  </div>
+
+  <div class="nav-center">
+    <a href="#">Home</a>
+    <a href="#">Tracker</a>
+    <a href="#">Interviews</a>
+    <a href="#">Documents</a>
+    <a href="#">Analytics</a>
+    <a href="#">Feedback</a>
+  </div>
+
+  <div class="nav-right">
+    <button class="nav-btn ghost">Login</button>
+    <button class="nav-btn solid">Sign Up</button>
+  </div>
+</nav>
+
+  <!-- Cursor glow -->
+<div class="cursor-glow"></div>
+
+<script>
+  const glow = document.querySelector('.cursor-glow');
+  window.addEventListener('mousemove', (e) => {
+    glow.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+  });
+</script>
+
 
   <!-- Background glows -->
   <div class="glow purple"></div>
