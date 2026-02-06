@@ -3,7 +3,7 @@ const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
 const app = express();
 const jobRoutes = require("./routes/jobRoutes.js");
-const feedbackRoutes = require("./routes/feedbackRoutes");
+const feedbackRoutes = require("./routes/feedbackRoutes.js");
 
 // middlewares
 app.use(cors());
