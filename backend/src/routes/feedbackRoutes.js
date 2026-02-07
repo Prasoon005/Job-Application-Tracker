@@ -11,19 +11,20 @@ router.post("/", protect , async (req, res) => {
   try {
     const feedback = await Feedback.create({
       ...req.body,
-      user: req.user.id,
+      user: req.user._id,
     });
 
     res.status(201).json(feedback);
   } catch (error) {
-    res.status(500).json({ message: "Failed to submit feedback" });
+  console.error("FEEDBACK ERROR:", error);
+  res.status(500).json({ message: error.message });
   }
 });
 
 /* GET USER FEEDBACKS */
 router.get("/", protect , async (req, res) => {
   try {
-    const feedbacks = await Feedback.find({ user: req.user.id }).sort({
+    const feedbacks = await Feedback.find({ user: req.user._id }).sort({
       createdAt: -1,
     });
 
