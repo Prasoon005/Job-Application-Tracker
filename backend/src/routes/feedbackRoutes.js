@@ -1,12 +1,13 @@
 const express = require("express");
 const router = express.Router();
 
-const Feedback = require("../models/feedback");
+const Feedback = require("../models/feedback.js");
  // here error may be possible //const Feedback = require("../models/Feedback");
-const authMiddleware = require("../middleware/authMiddleware");
+const { protect } = require("../middlewares/authMiddleware.js");
+
 
 /* CREATE FEEDBACK */
-router.post("/", authMiddleware, async (req, res) => {
+router.post("/", protect , async (req, res) => {
   try {
     const feedback = await Feedback.create({
       ...req.body,
@@ -20,7 +21,7 @@ router.post("/", authMiddleware, async (req, res) => {
 });
 
 /* GET USER FEEDBACKS */
-router.get("/", authMiddleware, async (req, res) => {
+router.get("/", protect , async (req, res) => {
   try {
     const feedbacks = await Feedback.find({ user: req.user.id }).sort({
       createdAt: -1,
