@@ -8,8 +8,8 @@
 html, body {
   width: 100%;
   height: 100%;
-  overflow: hidden;
   font-family: "Inter", sans-serif;
+  overflow: hidden;
 }
 
 /* ================= BODY ================= */
@@ -24,7 +24,6 @@ html, body {
     linear-gradient(180deg, #05070f, #0b0f1a);
 
   color: #e5e7eb;
-  overflow: hidden;
 }
 
 /* ================= BACKGROUND ORBS ================= */
@@ -56,8 +55,8 @@ html, body {
   z-index: 2;
 
   width: 100%;
-  height: 100%;
-  padding: 40px;
+  min-height: 100vh;
+  padding: 32px;
 
   display: grid;
   grid-template-columns: 260px 1fr 260px;
@@ -81,11 +80,26 @@ html, body {
     0 30px 80px rgba(0,0,0,0.55);
 }
 
-/* ================= PANELS HEIGHT ================= */
+/* ================= PANEL HEIGHT & SCROLL ================= */
 .sidebar,
 .board,
 .stats {
-  height: 100%;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.sidebar::-webkit-scrollbar,
+.board::-webkit-scrollbar,
+.stats::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb,
+.board::-webkit-scrollbar-thumb,
+.stats::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.15);
+  border-radius: 10px;
 }
 
 /* ================= SIDEBAR ================= */
@@ -104,21 +118,11 @@ html, body {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  object-fit: cover;
   margin-bottom: 12px;
 }
 
-.user-info h4 {
-  font-size: 16px;
-}
-
-.user-info span {
-  font-size: 13px;
-  opacity: 0.7;
-}
-
 .sidebar nav {
-  margin-top: 20px;
+  margin-top: 24px;
 }
 
 .sidebar nav a {
@@ -126,7 +130,6 @@ html, body {
   padding: 14px 16px;
   margin: 6px 0;
   border-radius: 14px;
-  font-weight: 500;
   cursor: pointer;
   transition: all 0.35s ease;
 }
@@ -169,7 +172,7 @@ html, body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 26px;
+  margin-bottom: 24px;
 }
 
 .board-header input {
@@ -179,7 +182,11 @@ html, body {
   border: none;
   outline: none;
   background: rgba(255,255,255,0.14);
-  color: white;
+  color: #f8fafc;
+}
+
+.board-header input::placeholder {
+  color: rgba(255,255,255,0.65);
 }
 
 .cta {
@@ -198,26 +205,28 @@ html, body {
   box-shadow: 0 18px 42px rgba(109,93,252,0.6);
 }
 
-/* ================= COLUMNS ================= */
+/* ================= COLUMNS (FIXED) ================= */
 .columns {
-  display: flex;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(240px, 1fr);
   gap: 22px;
-  flex: 1;
+  overflow-x: auto;
+  padding-bottom: 12px;
 }
 
 /* EACH COLUMN */
 .column {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 18px; /* 🔥 heading & cards spacing */
+  gap: 18px;
+  position: relative;
+  transition: all 0.4s ease;
 }
 
 .column h3 {
   font-size: 16px;
-  font-weight: 600;
   color: #c7d2fe;
-  letter-spacing: 0.3px;
 }
 
 /* ================= JOB CARD ================= */
@@ -225,12 +234,8 @@ html, body {
   background: rgba(255,255,255,0.12);
   padding: 18px;
   border-radius: 18px;
-  transition: all 0.35s ease;
   cursor: pointer;
-}
-
-.job-card small {
-  opacity: 0.7;
+  transition: all 0.35s ease;
 }
 
 .job-card:hover {
@@ -241,23 +246,17 @@ html, body {
 /* ================= STATS ================= */
 .stats {
   padding: 28px;
-  display: flex;
-  flex-direction: column;
 }
 
 .stats h3 {
   margin-bottom: 22px;
   font-size: 18px;
-  color: #e0e7ff;
 }
 
-/* STAT ROW */
 .stat-item {
   display: grid;
   grid-template-columns: 12px 1fr auto;
-  align-items: center;
   gap: 14px;
-
   padding: 12px 0;
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
@@ -266,16 +265,7 @@ html, body {
   border-bottom: none;
 }
 
-.stat-item span {
-  font-size: 14px;
-  opacity: 0.85;
-}
-
-.stat-item strong {
-  font-size: 18px;
-}
-
-/* ================= GLOSSY DOTS ================= */
+/* ================= DOTS ================= */
 .dot {
   width: 10px;
   height: 10px;
@@ -290,119 +280,66 @@ html, body {
 .dot.green  { background: #4ade80; color: #4ade80; }
 .dot.red    { background: #f87171; color: #f87171; }
 
-
-.counter {
-  animation: countFade 0.6s ease forwards;
-}
-
-@keyframes countFade {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-
-/* ================= COLUMN HOVER GLOW ================= */
-
-/* base transition */
-.column {
-  position: relative;
-  transition: all 0.4s ease;
-}
-
-/* glow layer */
-.column::before {
-  content: "";
-  position: absolute;
-  inset: -10px;
-  border-radius: 22px;
-  background: radial-gradient(
-    circle at top,
-    rgba(109,93,252,0.35),
-    transparent 60%
-  );
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* on hover */
-.column:hover::before {
-  opacity: 1;
-}
-
-/* slight lift on hover */
-.column:hover {
-  transform: translateY(-4px);
-}
-
-.columns:hover .column {
-  opacity: 0.55;
-}
-
-.columns:hover .column:hover {
-  opacity: 1;
-}
-
-.column.wishlist::before  { background: radial-gradient(circle, rgba(167,139,250,0.4), transparent 60%); }
-.column.applied::before   { background: radial-gradient(circle, rgba(34,211,238,0.4), transparent 60%); }
-.column.interview::before { background: radial-gradient(circle, rgba(250,204,21,0.4), transparent 60%); }
-.column.offer::before     { background: radial-gradient(circle, rgba(74,222,128,0.4), transparent 60%); }
-.column.rejected::before  { background: radial-gradient(circle, rgba(248,113,113,0.4), transparent 60%); }
-
-/* SEARCH INPUT FIX */
-.board-header input {
-  color: #f8fafc;              /* typed text */
-  font-weight: 500;
-}
-
-/* placeholder text */
-.board-header input::placeholder {
-  color: rgba(255, 255, 255, 0.65); /* 🔥 clearly visible */
-  font-weight: 400;
-}
-
-/* focus pe aur clear ho */
-.board-header input:focus::placeholder {
-  color: rgba(255, 255, 255, 0.4);
-}
-
-
-/* ================= COLUMN STATS POPUP ================= */
-
+/* ================= COLUMN POPUP ================= */
 .column-popup {
   position: fixed;
   min-width: 180px;
-  padding: 16px 18px;
+  padding: 16px;
   border-radius: 18px;
-  pointer-events: none;
-
   opacity: 0;
   transform: scale(0.95);
-  transition: all 0.25s ease;
-
+  transition: 0.25s ease;
   z-index: 999;
 }
 
-.column-popup h4 {
-  font-size: 14px;
-  margin-bottom: 6px;
-  color: #e0e7ff;
+/* ================= ADD JOB MODAL ================= */
+.job-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
 }
 
-.column-popup p {
-  font-size: 13px;
-  opacity: 0.85;
+.job-modal.show {
+  display: flex;
 }
 
-.column.wishlist:hover ~ .column-popup { box-shadow: 0 0 30px rgba(167,139,250,0.5); }
-.column.applied:hover  ~ .column-popup { box-shadow: 0 0 30px rgba(34,211,238,0.5); }
-.column.interview:hover~ .column-popup { box-shadow: 0 0 30px rgba(250,204,21,0.5); }
-.column.offer:hover    ~ .column-popup { box-shadow: 0 0 30px rgba(74,222,128,0.5); }
-.column.rejected:hover ~ .column-popup{ box-shadow: 0 0 30px rgba(248,113,113,0.5); }
+.job-modal-content {
+  width: 360px;
+  padding: 26px;
+  border-radius: 22px;
+}
+
+.job-modal-content h3 {
+  margin-bottom: 16px;
+}
+
+.job-modal-content input,
+.job-modal-content select {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255,255,255,0.14);
+  color: white;
+  outline: none;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.cancel-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.3);
+  color: white;
+  padding: 12px 18px;
+  border-radius: 14px;
+  cursor: pointer;
+}

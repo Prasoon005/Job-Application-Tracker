@@ -15,7 +15,7 @@ form.addEventListener("submit", async (e) => {
     localStorage.setItem("user", JSON.stringify(res.user));
 
     // Temporary redirect (dashboard later)
-    window.location.href = "feedback.html";
+    window.location.href = "dashboard.html";
   } catch (err) {
     alert(err.message);
   }

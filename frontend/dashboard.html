@@ -16,7 +16,7 @@
 
   <div class="dashboard-layout">
 
-    <!-- ================= SIDEBAR ================= -->
+    <!-- SIDEBAR -->
     <aside class="sidebar glass">
       <div>
         <div class="user-info">
@@ -37,143 +37,57 @@
       <button class="logout-btn">Logout</button>
     </aside>
 
-    <!-- ================= MAIN BOARD ================= -->
+    <!-- MAIN BOARD -->
     <main class="board glass">
-
-      <!-- HEADER -->
       <div class="board-header">
         <input type="text" placeholder="Search jobs..." />
         <button class="cta">+ Add Job</button>
       </div>
 
-      <!-- COLUMNS -->
       <div class="columns">
-
-        <div class="column wishlist" data-title="Wishlist" data-total="5">
-          <h3>Wishlist</h3>
-          <div class="job-card">IBM<br><small>Product Manager</small></div>
-        </div>
-
-        <div class="column applied" data-title="Applied" data-total="6">
-          <h3>Applied</h3>
-          <div class="job-card">Google<br><small>Software Engineer</small></div>
-        </div>
-
-        <div class="column interview" data-title="Interviews" data-total="4">
-          <h3>Interview</h3>
-          <div class="job-card">Meta<br><small>Frontend Developer</small></div>
-        </div>
-
-        <div class="column offer" data-title="Offers" data-total="1">
-          <h3>Offer</h3>
-          <div class="job-card">Infosys<br><small>Project Manager</small></div>
-        </div>
-
-        <div class="column rejected" data-title="Rejected" data-total="3">
-          <h3>Rejected</h3>
-          <div class="job-card">Adobe<br><small>Full Stack Developer</small></div>
-        </div>
-
+        <div class="column wishlist"><h3>Wishlist</h3></div>
+        <div class="column applied"><h3>Applied</h3></div>
+        <div class="column interview"><h3>Interview</h3></div>
+        <div class="column offer"><h3>Offer</h3></div>
+        <div class="column rejected"><h3>Rejected</h3></div>
       </div>
     </main>
 
-    <!-- ================= STATS ================= -->
+    <!-- STATS -->
     <aside class="stats glass">
       <h3>Application Stats</h3>
 
-      <div class="stat-item">
-        <span class="dot blue"></span>
-        <span>Total Applications</span>
-        <strong class="counter" data-count="18">0</strong>
-      </div>
-
-      <div class="stat-item">
-        <span class="dot purple"></span>
-        <span>Wishlist</span>
-        <strong class="counter" data-count="5">0</strong>
-      </div>
-
-      <div class="stat-item">
-        <span class="dot cyan"></span>
-        <span>Applied</span>
-        <strong class="counter" data-count="6">0</strong>
-      </div>
-
-      <div class="stat-item">
-        <span class="dot yellow"></span>
-        <span>Interviews</span>
-        <strong class="counter" data-count="4">0</strong>
-      </div>
-
-      <div class="stat-item">
-        <span class="dot green"></span>
-        <span>Offers</span>
-        <strong class="counter" data-count="1">0</strong>
-      </div>
-
-      <div class="stat-item">
-        <span class="dot red"></span>
-        <span>Rejected</span>
-        <strong class="counter" data-count="3">0</strong>
-      </div>
+      <div class="stat-item"><span class="dot blue"></span><span>Total</span><strong class="counter">0</strong></div>
+      <div class="stat-item"><span class="dot purple"></span><span>Wishlist</span><strong class="counter">0</strong></div>
+      <div class="stat-item"><span class="dot cyan"></span><span>Applied</span><strong class="counter">0</strong></div>
+      <div class="stat-item"><span class="dot yellow"></span><span>Interviews</span><strong class="counter">0</strong></div>
+      <div class="stat-item"><span class="dot green"></span><span>Offers</span><strong class="counter">0</strong></div>
+      <div class="stat-item"><span class="dot red"></span><span>Rejected</span><strong class="counter">0</strong></div>
     </aside>
-
   </div>
 
-  <!-- ================= COLUMN POPUP ================= -->
-  <div id="column-popup" class="column-popup glass">
-    <h4 id="popup-title"></h4>
-    <p>Total: <strong id="popup-total"></strong></p>
+  <!-- ADD JOB MODAL -->
+  <div id="job-modal" class="job-modal">
+    <div class="job-modal-content glass">
+      <h3>Add New Job</h3>
+      <form id="job-form">
+        <input id="job-company" placeholder="Company" required />
+        <input id="job-role" placeholder="Role" required />
+        <select id="job-status">
+          <option>Wishlist</option>
+          <option selected>Applied</option>
+          <option>Interview</option>
+          <option>Offer</option>
+          <option>Rejected</option>
+        </select>
+        <div class="modal-actions">
+          <button type="submit" class="cta">Add Job</button>
+          <button type="button" id="close-modal" class="cancel-btn">Cancel</button>
+        </div>
+      </form>
+    </div>
   </div>
 
-  <!-- ================= JAVASCRIPT ================= -->
-  <script>
-    /* Animated stats counter */
-    const counters = document.querySelectorAll(".counter");
-
-    counters.forEach(counter => {
-      const target = +counter.getAttribute("data-count");
-      let current = 0;
-
-      const step = Math.max(900 / target, 40);
-
-      const update = () => {
-        current++;
-        counter.textContent = current;
-        if (current < target) {
-          setTimeout(update, step);
-        } else {
-          counter.textContent = target;
-        }
-      };
-
-      update();
-    });
-
-    /* Column stats popup */
-    const popup = document.getElementById("column-popup");
-    const popupTitle = document.getElementById("popup-title");
-    const popupTotal = document.getElementById("popup-total");
-
-    document.querySelectorAll(".column").forEach(column => {
-      column.addEventListener("mouseenter", () => {
-        const rect = column.getBoundingClientRect();
-
-        popupTitle.textContent = column.dataset.title;
-        popupTotal.textContent = column.dataset.total;
-
-        popup.style.top = rect.top + 20 + "px";
-        popup.style.left = rect.right + 14 + "px";
-        popup.style.opacity = "1";
-        popup.style.transform = "scale(1)";
-      });
-
-      column.addEventListener("mouseleave", () => {
-        popup.style.opacity = "0";
-        popup.style.transform = "scale(0.95)";
-      });
-    });
-  </script>
-
+  <script src="js/dashboard.js"></script>
 </body>
 </html>
