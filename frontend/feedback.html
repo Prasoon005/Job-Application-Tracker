@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="CSS/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
+<script type="module" src="js/feedback.js"></script>
 
 <body class="feedback-body">
    <header class="page-header">
@@ -41,7 +42,7 @@
 
         <div class="form-row">
           <label>Feedback Type</label>
-          <select>
+          <select id="type">
             <option>Interview Experience</option>
             <option>Website Feedback</option>
           </select>
@@ -49,17 +50,17 @@
 
         <div class="form-row">
           <label>Your Role / Position</label>
-          <input type="text" placeholder="Backend Developer / Data Analyst" />
+          <input type="text" id="role" placeholder="Backend Developer / Data Analyst" />
         </div>
 
         <div class="form-row">
           <label>Company (optional)</label>
-          <input type="text" placeholder="Google / Amazon / Startup" />
+          <input type="text" id="company" placeholder="Google / Amazon / Startup" />
         </div>
 
         <div class="form-row">
           <label>Outcome</label>
-          <select>
+          <select id="outcome">
             <option>Selected</option>
             <option>Rejected</option>
             <option>In Progress</option>
@@ -68,7 +69,7 @@
 
         <div class="form-row">
           <label>Your Feedback</label>
-          <textarea rows="4" placeholder="Share your experience or suggestions..."></textarea>
+          <textarea rows="4" id="message" placeholder="Share your experience or suggestions..."></textarea>
         </div>
 
         <button class="cta full">Submit Feedback</button>
