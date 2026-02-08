@@ -343,3 +343,22 @@ html, body {
   border-radius: 14px;
   cursor: pointer;
 }
+
+/* ================= DELETE BUTTON ================= */
+.job-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.delete-btn {
+  cursor: pointer;
+  font-size: 14px;
+  opacity: 0.6;
+  transition: 0.2s;
+}
+
+.delete-btn:hover {
+  opacity: 1;
+  color: #f87171;
+}

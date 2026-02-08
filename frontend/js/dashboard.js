@@ -1,5 +1,13 @@
 const API_URL = "http://localhost:5000/api/jobs";
 const token = localStorage.getItem("token");
+const logoutBtn = document.querySelector(".logout-btn");
+
+logoutBtn.addEventListener("click", () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  window.location.href = "login.html";
+});
+
 
 if (!token) {
   alert("Please login first");
@@ -37,10 +45,14 @@ async function loadJobs() {
       const card = document.createElement("div");
       card.className = "job-card";
 
-      card.innerHTML = `
-        <strong>${job.company}</strong><br/>
-        <small>${job.role}</small>
-      `;
+     card.innerHTML = `
+  <div class="job-card-header">
+    <strong>${job.company}</strong>
+    <span class="delete-btn" data-id="${job._id}">✖</span>
+  </div>
+  <small>${job.role}</small>
+`;
+
 
       if (columns[job.status]) {
         columns[job.status].appendChild(card);
@@ -131,3 +143,25 @@ function animateCounter(el, target) {
 
   tick();
 }
+
+document.addEventListener("click", async (e) => {
+  if (e.target.classList.contains("delete-btn")) {
+    const jobId = e.target.dataset.id;
+
+    const confirmDelete = confirm("Delete this job?");
+    if (!confirmDelete) return;
+
+    try {
+      await fetch(`http://localhost:5000/api/jobs/${jobId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+
+      loadJobs(); 
+    } catch {
+      alert("Failed to delete job");
+    }
+  }
+});
