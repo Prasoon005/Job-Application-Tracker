@@ -1,20 +1,22 @@
+/* ================= CONFIG & AUTH ================= */
+
 const API_URL = "http://localhost:5000/api/jobs";
 const token = localStorage.getItem("token");
-const logoutBtn = document.querySelector(".logout-btn");
 
+if (!token) {
+  window.location.href = "login.html";
+}
+
+/* Logout */
+const logoutBtn = document.querySelector(".logout-btn");
 logoutBtn.addEventListener("click", () => {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
   window.location.href = "login.html";
 });
 
-
-if (!token) {
-  alert("Please login first");
-  window.location.href = "login.html";
-}
-
 /* ================= COLUMN MAPPING ================= */
+
 const columns = {
   Wishlist: document.querySelector(".column.wishlist"),
   Applied: document.querySelector(".column.applied"),
@@ -24,39 +26,36 @@ const columns = {
 };
 
 /* ================= LOAD JOBS ================= */
+
 async function loadJobs() {
   try {
     const res = await fetch(API_URL, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     const jobs = await res.json();
     console.log("Jobs from backend:", jobs);
 
-    /* Clear old cards */
+    /* Clear existing cards */
     Object.values(columns).forEach(col => {
       col.querySelectorAll(".job-card").forEach(card => card.remove());
     });
 
-    /* Render cards */
+    /* Render job cards */
     jobs.forEach(job => {
       const card = document.createElement("div");
       card.className = "job-card";
 
-     card.innerHTML = `
-  <div class="job-card-header">
-  <strong>${job.company}</strong>
-  <div class="card-actions">
-    <span class="edit-btn" data-id="${job._id}" data-status="${job.status}">✏️</span>
-    <span class="delete-btn" data-id="${job._id}">✖</span>
-  </div>
-</div>
-
-  <small>${job.role}</small>
-`;
-
+      card.innerHTML = `
+        <div class="job-card-header">
+          <strong>${job.company}</strong>
+          <div class="card-actions">
+            <span class="edit-btn" data-id="${job._id}" data-status="${job.status}">✏️</span>
+            <span class="delete-btn" data-id="${job._id}">✖</span>
+          </div>
+        </div>
+        <small>${job.role}</small>
+      `;
 
       if (columns[job.status]) {
         columns[job.status].appendChild(card);
@@ -65,14 +64,15 @@ async function loadJobs() {
 
     updateStats(jobs);
 
-  } catch (error) {
-    console.error("Dashboard Error:", error.message);
+  } catch (err) {
+    console.error("Dashboard Error:", err.message);
   }
 }
 
 loadJobs();
 
 /* ================= ADD JOB MODAL ================= */
+
 const modal = document.getElementById("job-modal");
 const openBtn = document.querySelector(".cta");
 const closeBtn = document.getElementById("close-modal");
@@ -107,7 +107,50 @@ jobForm.addEventListener("submit", async (e) => {
   }
 });
 
-/* ================= STATS LOGIC ================= */
+/* ================= DELETE & EDIT HANDLERS ================= */
+
+document.addEventListener("click", async (e) => {
+
+  /* DELETE */
+  if (e.target.classList.contains("delete-btn")) {
+    const jobId = e.target.dataset.id;
+    if (!confirm("Delete this job?")) return;
+
+    await fetch(`${API_URL}/${jobId}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    loadJobs();
+  }
+
+  /* EDIT */
+  if (e.target.classList.contains("edit-btn")) {
+    const jobId = e.target.dataset.id;
+    const currentStatus = e.target.dataset.status;
+
+    const newStatus = prompt(
+      "Update status (Wishlist, Applied, Interview, Offer, Rejected):",
+      currentStatus
+    );
+
+    if (!newStatus) return;
+
+    await fetch(`${API_URL}/${jobId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ status: newStatus }),
+    });
+
+    loadJobs();
+  }
+});
+
+/* ================= STATS & COUNTERS ================= */
+
 function updateStats(jobs) {
   const stats = {
     total: jobs.length,
@@ -131,6 +174,8 @@ function updateStats(jobs) {
   ];
 
   counters.forEach((el, i) => animateCounter(el, values[i]));
+
+
 }
 
 function animateCounter(el, target) {
@@ -148,55 +193,44 @@ function animateCounter(el, target) {
   tick();
 }
 
-document.addEventListener("click", async (e) => {
-  if (e.target.classList.contains("delete-btn")) {
-    const jobId = e.target.dataset.id;
+/* ================= CHARTS ================= */
 
-    const confirmDelete = confirm("Delete this job?");
-    if (!confirmDelete) return;
+let statusChart, pieChart;
 
-    try {
-      await fetch(`http://localhost:5000/api/jobs/${jobId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      });
+function renderCharts(stats) {
+  const labels = ["Wishlist", "Applied", "Interview", "Offer", "Rejected"];
+  const data = [
+    stats.Wishlist,
+    stats.Applied,
+    stats.Interview,
+    stats.Offer,
+    stats.Rejected,
+  ];
 
-      loadJobs(); 
-    } catch {
-      alert("Failed to delete job");
-    }
-  }
-});
+  if (statusChart) statusChart.destroy();
+  if (pieChart) pieChart.destroy();
 
+  statusChart = new Chart(document.getElementById("statusChart"), {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [{
+        label: "Applications",
+        data,
+        backgroundColor: ["#a78bfa", "#60a5fa", "#facc15", "#4ade80", "#f87171"],
+      }],
+    },
+    options: { plugins: { legend: { display: false } } },
+  });
 
-
-document.addEventListener("click", async (e) => {
-  if (e.target.classList.contains("edit-btn")) {
-    const jobId = e.target.dataset.id;
-    const currentStatus = e.target.dataset.status;
-
-    const newStatus = prompt(
-      "Update status (Wishlist, Applied, Interview, Offer, Rejected):",
-      currentStatus
-    );
-
-    if (!newStatus) return;
-
-    try {
-      await fetch(`http://localhost:5000/api/jobs/${jobId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-        body: JSON.stringify({ status: newStatus }),
-      });
-
-      loadJobs(); // 🔥 refresh UI
-    } catch {
-      alert("Failed to update job");
-    }
-  }
-});
+  pieChart = new Chart(document.getElementById("pieChart"), {
+    type: "pie",
+    data: {
+      labels,
+      datasets: [{
+        data,
+        backgroundColor: ["#a78bfa", "#60a5fa", "#facc15", "#4ade80", "#f87171"],
+      }],
+    },
+  });
+}

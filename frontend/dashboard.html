@@ -16,7 +16,7 @@
 
   <div class="dashboard-layout">
 
-    <!-- SIDEBAR -->
+    <!-- ================= SIDEBAR ================= -->
     <aside class="sidebar glass">
       <div>
         <div class="user-info">
@@ -37,7 +37,7 @@
       <button class="logout-btn">Logout</button>
     </aside>
 
-    <!-- MAIN BOARD -->
+    <!-- ================= MAIN BOARD ================= -->
     <main class="board glass">
       <div class="board-header">
         <input type="text" placeholder="Search jobs..." />
@@ -53,26 +53,57 @@
       </div>
     </main>
 
-    <!-- STATS -->
+    <!-- ================= STATS + ANALYTICS ================= -->
     <aside class="stats glass">
       <h3>Application Stats</h3>
 
-      <div class="stat-item"><span class="dot blue"></span><span>Total</span><strong class="counter">0</strong></div>
-      <div class="stat-item"><span class="dot purple"></span><span>Wishlist</span><strong class="counter">0</strong></div>
-      <div class="stat-item"><span class="dot cyan"></span><span>Applied</span><strong class="counter">0</strong></div>
-      <div class="stat-item"><span class="dot yellow"></span><span>Interviews</span><strong class="counter">0</strong></div>
-      <div class="stat-item"><span class="dot green"></span><span>Offers</span><strong class="counter">0</strong></div>
-      <div class="stat-item"><span class="dot red"></span><span>Rejected</span><strong class="counter">0</strong></div>
+      <div class="stat-item">
+        <span class="dot blue"></span>
+        <span>Total</span>
+        <strong class="counter">0</strong>
+      </div>
+
+      <div class="stat-item">
+        <span class="dot purple"></span>
+        <span>Wishlist</span>
+        <strong class="counter">0</strong>
+      </div>
+
+      <div class="stat-item">
+        <span class="dot cyan"></span>
+        <span>Applied</span>
+        <strong class="counter">0</strong>
+      </div>
+
+      <div class="stat-item">
+        <span class="dot yellow"></span>
+        <span>Interviews</span>
+        <strong class="counter">0</strong>
+      </div>
+
+      <div class="stat-item">
+        <span class="dot green"></span>
+        <span>Offers</span>
+        <strong class="counter">0</strong>
+      </div>
+
+      <div class="stat-item">
+        <span class="dot red"></span>
+        <span>Rejected</span>
+        <strong class="counter">0</strong>
+      </div>
     </aside>
   </div>
 
-  <!-- ADD JOB MODAL -->
+  <!-- ================= ADD JOB MODAL ================= -->
   <div id="job-modal" class="job-modal">
     <div class="job-modal-content glass">
       <h3>Add New Job</h3>
+
       <form id="job-form">
         <input id="job-company" placeholder="Company" required />
         <input id="job-role" placeholder="Role" required />
+
         <select id="job-status">
           <option>Wishlist</option>
           <option selected>Applied</option>
@@ -80,6 +111,7 @@
           <option>Offer</option>
           <option>Rejected</option>
         </select>
+
         <div class="modal-actions">
           <button type="submit" class="cta">Add Job</button>
           <button type="button" id="close-modal" class="cancel-btn">Cancel</button>
@@ -88,6 +120,9 @@
     </div>
   </div>
 
+  <!-- ================= SCRIPTS ================= -->
+  
   <script src="js/dashboard.js"></script>
+
 </body>
 </html>
