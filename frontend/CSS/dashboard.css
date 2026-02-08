@@ -362,3 +362,22 @@ html, body {
   opacity: 1;
   color: #f87171;
 }
+
+
+/* ================= EDIT BUTTON ================= */
+.card-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-btn {
+  cursor: pointer;
+  font-size: 14px;
+  opacity: 0.6;
+  transition: 0.2s;
+}
+
+.edit-btn:hover {
+  opacity: 1;
+  color: #60a5fa;
+}

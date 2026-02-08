@@ -47,9 +47,13 @@ async function loadJobs() {
 
      card.innerHTML = `
   <div class="job-card-header">
-    <strong>${job.company}</strong>
+  <strong>${job.company}</strong>
+  <div class="card-actions">
+    <span class="edit-btn" data-id="${job._id}" data-status="${job.status}">✏️</span>
     <span class="delete-btn" data-id="${job._id}">✖</span>
   </div>
+</div>
+
   <small>${job.role}</small>
 `;
 
@@ -162,6 +166,37 @@ document.addEventListener("click", async (e) => {
       loadJobs(); 
     } catch {
       alert("Failed to delete job");
+    }
+  }
+});
+
+
+
+document.addEventListener("click", async (e) => {
+  if (e.target.classList.contains("edit-btn")) {
+    const jobId = e.target.dataset.id;
+    const currentStatus = e.target.dataset.status;
+
+    const newStatus = prompt(
+      "Update status (Wishlist, Applied, Interview, Offer, Rejected):",
+      currentStatus
+    );
+
+    if (!newStatus) return;
+
+    try {
+      await fetch(`http://localhost:5000/api/jobs/${jobId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
+
+      loadJobs(); // 🔥 refresh UI
+    } catch {
+      alert("Failed to update job");
     }
   }
 });
