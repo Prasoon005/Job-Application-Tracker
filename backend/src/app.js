@@ -4,6 +4,10 @@ const authRoutes = require("./routes/authRoutes.js");
 const app = express();
 const jobRoutes = require("./routes/jobRoutes.js");
 const feedbackRoutes = require("./routes/feedbackRoutes.js");
+const resumeRoutes = require("./routes/resumeRoutes");
+
+app.use("/api/resume", resumeRoutes);
+
 
 // middlewares
 app.use(cors());
