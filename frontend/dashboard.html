@@ -5,9 +5,10 @@
   <title>Dashboard | Job Tracker</title>
 
   <link rel="stylesheet" href="./CSS/dashboard.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./CSS/analytics.css" />
   <link rel="stylesheet" href="./CSS/application.css" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body class="dashboard-body">
@@ -66,27 +67,26 @@
       <!-- ================= APPLICATIONS VIEW ================= -->
       <section id="applications-view" class="hidden">
 
-        <!-- TOP ROW -->
+        <!-- TOP SECTION -->
         <div class="applications-top">
 
-          <!-- LEFT SIDE -->
+          <!-- LEFT -->
           <div class="left-info">
             <h3>All Applications</h3>
 
-            <!-- APPLY RESOURCES -->
             <div class="apply-resources glass">
               <h4>Apply Resources</h4>
 
               <div class="resource-links">
-                <a id="resume-link" target="_blank">📄 Resume</a>
-                <a id="portfolio-link" target="_blank">🌐 Portfolio</a>
-                <a id="linkedin-link" target="_blank">🔗 LinkedIn</a>
+                <a id="resume-link">📄 Resume</a>
+                <a id="portfolio-link">🌐 Portfolio</a>
+                <a id="linkedin-link">🔗 LinkedIn</a>
                 <a id="contact-link">✉ Contact</a>
               </div>
             </div>
           </div>
 
-          <!-- RIGHT SIDE -->
+          <!-- RIGHT -->
           <div class="applications-header">
             <input
               type="text"
@@ -108,7 +108,7 @@
 
         <!-- APPLICATION LIST -->
         <div class="applications-list" id="applications-list">
-          <!-- Jobs dynamically inserted here -->
+          <!-- Jobs injected here -->
         </div>
 
       </section>
@@ -189,6 +189,51 @@
           <button type="button" id="close-modal" class="cancel-btn">Cancel</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- ================= RESUME MODAL ================= -->
+  <div id="resume-modal" class="resume-modal">
+    <div class="resume-modal-content glass">
+      <h3>Add Resume</h3>
+
+      <div class="resume-option" id="upload-resume-btn">
+        📂 Upload from device
+        <input
+          type="file"
+          id="resume-file-input"
+          accept=".pdf,.doc,.docx"
+          hidden
+        />
+      </div>
+
+      <div class="resume-option drop-zone" id="resume-drop-zone">
+        🖱 Drag & Drop resume here
+      </div>
+
+      <div class="resume-option" id="drive-link-btn">
+        ☁ Add Google Drive link
+      </div>
+
+      <input
+        type="text"
+        id="drive-link-input"
+        placeholder="Paste Google Drive resume link"
+        style="display:none;"
+      />
+
+      <p id="resume-file-name"></p>
+ 
+      <div class="resume-actions" style="display:flex; gap:12px; margin-top:14px;">
+        <button id="view-resume-btn" class="cta" style="width:100%; margin-bottom:10px;">
+       👁 View Resume
+        </button>
+
+      <button id="replace-resume-btn" class="cta">♻ Replace</button>
+      <button id="delete-resume-btn" class="cancel-btn">🗑 Delete</button>
+      </div>
+
+      <button id="close-resume-modal" class="cancel-btn">Close</button>
     </div>
   </div>
 

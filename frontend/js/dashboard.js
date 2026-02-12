@@ -14,28 +14,9 @@ const user = JSON.parse(localStorage.getItem("user") || "{}");
 const userNameEl = document.getElementById("user-name");
 const userEmailEl = document.getElementById("user-email");
 
-if (userNameEl && userEmailEl) {
-  userNameEl.textContent = user.name || "User";
-  userEmailEl.textContent = user.email || "";
-}
-/* ================= APPLY RESOURCES ================= */
+if (userNameEl) userNameEl.textContent = user.name || "User";
+if (userEmailEl) userEmailEl.textContent = user.email || "";
 
-const applyResources = {
-  resume: "https://drive.google.com/file/d/XXXX/view",
-  portfolio: "https://your-portfolio-site.com",
-  linkedin: "https://linkedin.com/in/yourusername",
-  email: "your@email.com",
-};
-
-const resumeLink = document.getElementById("resume-link");
-const portfolioLink = document.getElementById("portfolio-link");
-const linkedinLink = document.getElementById("linkedin-link");
-const contactLink = document.getElementById("contact-link");
-
-if (resumeLink) resumeLink.href = applyResources.resume;
-if (portfolioLink) portfolioLink.href = applyResources.portfolio;
-if (linkedinLink) linkedinLink.href = applyResources.linkedin;
-if (contactLink) contactLink.href = `mailto:${applyResources.email}`;
 /* ================= GLOBAL STATE ================= */
 
 let allJobs = [];
@@ -49,7 +30,6 @@ const applicationsView = document.getElementById("applications-view");
 
 const pageTitle = document.getElementById("page-title");
 const addJobBtn = document.getElementById("add-job-btn");
-
 const navLinks = document.querySelectorAll(".sidebar nav a");
 const headerActions = document.querySelector(".header-actions");
 
@@ -65,10 +45,13 @@ headerActions.classList.remove("hide-search");
 
 /* ================= LOGOUT ================= */
 
-document.querySelector(".logout-btn").addEventListener("click", () => {
-  localStorage.clear();
-  window.location.href = "login.html";
-});
+const logoutBtn = document.querySelector(".logout-btn");
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", () => {
+    localStorage.clear();
+    window.location.href = "login.html";
+  });
+}
 
 /* ================= COLUMN MAPPING ================= */
 
@@ -90,9 +73,10 @@ async function loadJobs() {
 
     allJobs = await res.json();
 
-    Object.values(columns).forEach(col =>
-      col.querySelectorAll(".job-card").forEach(card => card.remove())
-    );
+    Object.values(columns).forEach(col => {
+      if (!col) return;
+      col.querySelectorAll(".job-card").forEach(card => card.remove());
+    });
 
     allJobs.forEach(job => {
       const card = document.createElement("div");
@@ -114,7 +98,7 @@ async function loadJobs() {
 
     updateDashboardStats(allJobs);
   } catch (err) {
-    console.error("Dashboard Error:", err.message);
+    console.error("Dashboard Error:", err);
   }
 }
 
@@ -125,29 +109,37 @@ loadJobs();
 const modal = document.getElementById("job-modal");
 const jobForm = document.getElementById("job-form");
 
-addJobBtn.addEventListener("click", () => modal.classList.add("show"));
-document.getElementById("close-modal").addEventListener("click", () => modal.classList.remove("show"));
+if (addJobBtn && modal) {
+  addJobBtn.addEventListener("click", () => modal.classList.add("show"));
+}
 
-jobForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
+const closeModalBtn = document.getElementById("close-modal");
+if (closeModalBtn && modal) {
+  closeModalBtn.addEventListener("click", () => modal.classList.remove("show"));
+}
 
-  const company = jobForm["job-company"].value.trim();
-  const role = jobForm["job-role"].value.trim();
-  const status = jobForm["job-status"].value;
+if (jobForm) {
+  jobForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  await fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ company, role, status }),
+    const company = jobForm["job-company"].value.trim();
+    const role = jobForm["job-role"].value.trim();
+    const status = jobForm["job-status"].value;
+
+    await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ company, role, status }),
+    });
+
+    modal.classList.remove("show");
+    jobForm.reset();
+    loadJobs();
   });
-
-  modal.classList.remove("show");
-  jobForm.reset();
-  loadJobs();
-});
+}
 
 /* ================= DELETE & EDIT ================= */
 
@@ -212,7 +204,9 @@ function updateDashboardStats(jobs) {
 function buildTimeline(jobs) {
   const map = {};
   jobs.forEach(j => {
-    const d = new Date(j.updatedAt || j.createdAt).toISOString().split("T")[0];
+    const d = new Date(j.updatedAt || j.createdAt)
+      .toISOString()
+      .split("T")[0];
     map[d] ??= { Applied: 0, Interview: 0, Offer: 0, Rejected: 0 };
     map[d][j.status]++;
   });
@@ -297,7 +291,6 @@ navLinks.forEach(link => {
     analyticsView.classList.add("hidden");
     applicationsView.classList.add("hidden");
 
-    /* DASHBOARD */
     if (page === "Dashboard") {
       dashboardView.classList.remove("hidden");
       pageTitle.textContent = "Dashboard";
@@ -305,17 +298,14 @@ navLinks.forEach(link => {
       headerActions.classList.remove("hide-search");
     }
 
-    /* APPLICATIONS */
     if (page === "Applications") {
       applicationsView.classList.remove("hidden");
       pageTitle.textContent = "Applications";
       addJobBtn.style.display = "none";
       headerActions.classList.add("hide-search");
-
       renderApplications(allJobs);
     }
 
-    /* ANALYTICS */
     if (page === "Analytics") {
       analyticsView.classList.remove("hidden");
       pageTitle.textContent = "Analytics";
@@ -343,3 +333,174 @@ document.addEventListener("mousemove", (e) => {
     linear-gradient(180deg, #05070f, #0b0f1a)
   `;
 });
+
+/* ================= RESUME MODAL (FULL WORKING LOGIC) ================= */
+
+const resumeModal = document.getElementById("resume-modal");
+const resumeFileInput = document.getElementById("resume-file-input");
+const resumeFileName = document.getElementById("resume-file-name");
+const driveInput = document.getElementById("drive-link-input");
+const dropZone = document.getElementById("resume-drop-zone");
+
+document.addEventListener("click", (e) => {
+
+  /* ================= OPEN MODAL ================= */
+  if (e.target && e.target.id === "resume-link") {
+    e.preventDefault();
+    resumeModal?.classList.add("show");
+  }
+
+  /* ================= CLOSE MODAL ================= */
+  if (e.target && e.target.id === "close-resume-modal") {
+    resumeModal?.classList.remove("show");
+  }
+
+  /* ================= UPLOAD FROM DEVICE ================= */
+  if (e.target.closest("#upload-resume-btn")) {
+    resumeFileInput?.click();
+  }
+
+  /* ================= TOGGLE GOOGLE DRIVE INPUT ================= */
+  if (e.target && e.target.id === "drive-link-btn") {
+    if (driveInput) {
+      driveInput.style.display =
+        driveInput.style.display === "block" ? "none" : "block";
+      driveInput.focus();
+    }
+  }
+});
+
+/* ================= FILE PICKER HANDLER ================= */
+
+if (resumeFileInput) {
+  resumeFileInput.addEventListener("change", () => {
+    const file = resumeFileInput.files[0];
+    if (!file) return;
+
+    const allowedTypes = [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+      alert("Only PDF / DOC / DOCX files are allowed");
+      resumeFileInput.value = "";
+      return;
+    }
+
+    localStorage.setItem("resumeFileName", file.name);
+    resumeFileName.textContent = `Uploaded: ${file.name}`;
+  });
+}
+
+/* ================= DRAG & DROP ================= */
+
+if (dropZone) {
+  dropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropZone.classList.add("drag-over");
+  });
+
+  dropZone.addEventListener("dragleave", () => {
+    dropZone.classList.remove("drag-over");
+  });
+
+  dropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropZone.classList.remove("drag-over");
+
+    const file = e.dataTransfer.files[0];
+    if (!file) return;
+
+    const allowedTypes = [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+      alert("Only PDF / DOC / DOCX files are allowed");
+      return;
+    }
+
+    localStorage.setItem("resumeFileName", file.name);
+    resumeFileName.textContent = `Uploaded: ${file.name}`;
+  });
+}
+
+/* ================= GOOGLE DRIVE LINK SAVE ================= */
+
+if (driveInput) {
+  driveInput.addEventListener("change", () => {
+    const link = driveInput.value.trim();
+    if (!link) return;
+
+    localStorage.setItem("resumeDriveLink", link);
+    resumeFileName.textContent = "Resume linked via Google Drive";
+  });
+}
+
+/* ================= REPLACE & DELETE RESUME ================= */
+
+const replaceBtn = document.getElementById("replace-resume-btn");
+const deleteBtn = document.getElementById("delete-resume-btn");
+
+/* Replace = open file picker again */
+if (replaceBtn) {
+  replaceBtn.addEventListener("click", () => {
+    resumeFileInput?.click();
+  });
+}
+
+/* Delete resume */
+if (deleteBtn) {
+  deleteBtn.addEventListener("click", () => {
+    const confirmDelete = confirm("Are you sure you want to delete your resume?");
+    if (!confirmDelete) return;
+
+    // Remove all resume data
+    localStorage.removeItem("resumeFileName");
+    localStorage.removeItem("resumeDriveLink");
+
+    // Reset UI
+    if (resumeFileInput) resumeFileInput.value = "";
+    if (driveInput) driveInput.value = "";
+    if (driveInput) driveInput.style.display = "none";
+
+    resumeFileName.textContent = "No resume uploaded";
+
+    alert("Resume deleted successfully");
+  });
+}
+
+/* ================= RESUME PREVIEW ================= */
+
+const viewResumeBtn = document.getElementById("view-resume-btn");
+
+if (viewResumeBtn) {
+  viewResumeBtn.addEventListener("click", () => {
+
+    const driveLink = localStorage.getItem("resumeDriveLink");
+    const fileName = localStorage.getItem("resumeFileName");
+
+    /* Priority 1: Google Drive link */
+    if (driveLink) {
+      window.open(driveLink, "_blank");
+      return;
+    }
+
+    /* Priority 2: Uploaded file (UI only for now) */
+    if (fileName) {
+      alert(
+        `Resume uploaded: ${fileName}\n\n` +
+        "Preview will be available after backend upload integration."
+      );
+      return;
+    }
+
+    alert("No resume available to preview.");
+  });
+}
+
+
