@@ -6,6 +6,8 @@
 
   <link rel="stylesheet" href="./CSS/dashboard.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./CSS/analytics.css" />
+
 </head>
 
 <body class="dashboard-body">
@@ -21,8 +23,9 @@
       <div>
         <div class="user-info">
           <img src="https://i.pravatar.cc/100" class="avatar" />
-          <h4>Prasoon Gupta</h4>
-          <span>prasoon@test.com</span>
+          <h4 id="user-name">User Name</h4>
+          <span id="user-email">user@email.com</span>
+
         </div>
 
         <nav>
@@ -39,59 +42,80 @@
 
     <!-- ================= MAIN BOARD ================= -->
     <main class="board glass">
+
+      <!-- HEADER -->
       <div class="board-header">
-        <input type="text" placeholder="Search jobs..." />
-        <button class="cta">+ Add Job</button>
+        <h2 id="page-title">Dashboard</h2>
+
+        <div class="header-actions">
+          <input type="text" placeholder="Search jobs..." />
+          <button class="cta" id="add-job-btn">+ Add Job</button>
+        </div>
       </div>
 
-      <div class="columns">
-        <div class="column wishlist"><h3>Wishlist</h3></div>
-        <div class="column applied"><h3>Applied</h3></div>
-        <div class="column interview"><h3>Interview</h3></div>
-        <div class="column offer"><h3>Offer</h3></div>
-        <div class="column rejected"><h3>Rejected</h3></div>
-      </div>
+      <!-- ================= DASHBOARD VIEW ================= -->
+      <section id="dashboard-view" class="view-section">
+        <div class="columns">
+          <div class="column wishlist"><h3>Wishlist</h3></div>
+          <div class="column applied"><h3>Applied</h3></div>
+          <div class="column interview"><h3>Interview</h3></div>
+          <div class="column offer"><h3>Offer</h3></div>
+          <div class="column rejected"><h3>Rejected</h3></div>
+        </div>
+      </section>
+
+      <!-- ================= ANALYTICS VIEW ================= -->
+      <section id="analytics-view" class="view-section hidden">
+
+        <!-- KPI CARDS -->
+        <div class="analytics-cards">
+          <div class="analytics-card glass">
+            <span>Total Applications</span>
+            <strong id="totalApps">0</strong>
+          </div>
+
+          <div class="analytics-card glass">
+            <span>Rejection Rate</span>
+            <strong id="rejectionRate">0%</strong>
+          </div>
+
+          <div class="analytics-card glass">
+            <span>Offers</span>
+            <strong id="totalOffers">0</strong>
+          </div>
+
+          <div class="analytics-card glass">
+            <span>Active Pipeline</span>
+            <strong id="activePipeline">0</strong>
+          </div>
+        </div>
+
+        <!-- LINE GRAPH -->
+        <div class="analytics-graph glass">
+          <h3>Application Trend</h3>
+          <canvas id="trendChart"></canvas>
+        </div>
+
+        <!-- INSIGHT -->
+        <div class="analytics-insight glass">
+          <p id="analyticsInsight">
+            Your application performance will appear here.
+          </p>
+        </div>
+
+      </section>
     </main>
 
-    <!-- ================= STATS + ANALYTICS ================= -->
+    <!-- ================= STATS ================= -->
     <aside class="stats glass">
       <h3>Application Stats</h3>
 
-      <div class="stat-item">
-        <span class="dot blue"></span>
-        <span>Total</span>
-        <strong class="counter">0</strong>
-      </div>
-
-      <div class="stat-item">
-        <span class="dot purple"></span>
-        <span>Wishlist</span>
-        <strong class="counter">0</strong>
-      </div>
-
-      <div class="stat-item">
-        <span class="dot cyan"></span>
-        <span>Applied</span>
-        <strong class="counter">0</strong>
-      </div>
-
-      <div class="stat-item">
-        <span class="dot yellow"></span>
-        <span>Interviews</span>
-        <strong class="counter">0</strong>
-      </div>
-
-      <div class="stat-item">
-        <span class="dot green"></span>
-        <span>Offers</span>
-        <strong class="counter">0</strong>
-      </div>
-
-      <div class="stat-item">
-        <span class="dot red"></span>
-        <span>Rejected</span>
-        <strong class="counter">0</strong>
-      </div>
+      <div class="stat-item"><span class="dot blue"></span><span>Total</span><strong class="counter">0</strong></div>
+      <div class="stat-item"><span class="dot purple"></span><span>Wishlist</span><strong class="counter">0</strong></div>
+      <div class="stat-item"><span class="dot cyan"></span><span>Applied</span><strong class="counter">0</strong></div>
+      <div class="stat-item"><span class="dot yellow"></span><span>Interviews</span><strong class="counter">0</strong></div>
+      <div class="stat-item"><span class="dot green"></span><span>Offers</span><strong class="counter">0</strong></div>
+      <div class="stat-item"><span class="dot red"></span><span>Rejected</span><strong class="counter">0</strong></div>
     </aside>
   </div>
 
@@ -120,9 +144,8 @@
     </div>
   </div>
 
-  <!-- ================= SCRIPTS ================= -->
-  
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="js/dashboard.js"></script>
-
 </body>
 </html>

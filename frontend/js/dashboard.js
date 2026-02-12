@@ -7,11 +7,41 @@ if (!token) {
   window.location.href = "login.html";
 }
 
-/* Logout */
-const logoutBtn = document.querySelector(".logout-btn");
-logoutBtn.addEventListener("click", () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("user");
+/* ================= USER INFO ================= */
+
+const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+const userNameEl = document.getElementById("user-name");
+const userEmailEl = document.getElementById("user-email");
+
+if (userNameEl && userEmailEl) {
+  userNameEl.textContent = user.name || "User";
+  userEmailEl.textContent = user.email || "";
+}
+
+/* ================= GLOBAL STATE ================= */
+
+let allJobs = [];
+let trendChart = null;
+
+/* ================= VIEW ELEMENTS ================= */
+
+const dashboardView = document.getElementById("dashboard-view");
+const analyticsView = document.getElementById("analytics-view");
+const pageTitle = document.getElementById("page-title");
+const addJobBtn = document.getElementById("add-job-btn");
+const navLinks = document.querySelectorAll(".sidebar nav a");
+
+/* Default View */
+dashboardView.classList.remove("hidden");
+analyticsView.classList.add("hidden");
+pageTitle.textContent = "Dashboard";
+addJobBtn.style.display = "inline-block";
+
+/* ================= LOGOUT ================= */
+
+document.querySelector(".logout-btn").addEventListener("click", () => {
+  localStorage.clear();
   window.location.href = "login.html";
 });
 
@@ -33,16 +63,15 @@ async function loadJobs() {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    const jobs = await res.json();
-    console.log("Jobs from backend:", jobs);
+    allJobs = await res.json();
 
-    /* Clear existing cards */
-    Object.values(columns).forEach(col => {
-      col.querySelectorAll(".job-card").forEach(card => card.remove());
-    });
+    /* Clear old cards */
+    Object.values(columns).forEach(col =>
+      col.querySelectorAll(".job-card").forEach(card => card.remove())
+    );
 
-    /* Render job cards */
-    jobs.forEach(job => {
+    /* Render cards */
+    allJobs.forEach(job => {
       const card = document.createElement("div");
       card.className = "job-card";
 
@@ -57,12 +86,10 @@ async function loadJobs() {
         <small>${job.role}</small>
       `;
 
-      if (columns[job.status]) {
-        columns[job.status].appendChild(card);
-      }
+      columns[job.status]?.appendChild(card);
     });
 
-    updateStats(jobs);
+    updateDashboardStats(allJobs);
 
   } catch (err) {
     console.error("Dashboard Error:", err.message);
@@ -71,52 +98,43 @@ async function loadJobs() {
 
 loadJobs();
 
-/* ================= ADD JOB MODAL ================= */
+/* ================= ADD JOB ================= */
 
 const modal = document.getElementById("job-modal");
-const openBtn = document.querySelector(".cta");
-const closeBtn = document.getElementById("close-modal");
 const jobForm = document.getElementById("job-form");
 
-openBtn.addEventListener("click", () => modal.classList.add("show"));
-closeBtn.addEventListener("click", () => modal.classList.remove("show"));
+addJobBtn.addEventListener("click", () => modal.classList.add("show"));
+document.getElementById("close-modal").addEventListener("click", () => modal.classList.remove("show"));
 
 jobForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const company = document.getElementById("job-company").value.trim();
-  const role = document.getElementById("job-role").value.trim();
-  const status = document.getElementById("job-status").value;
+  const company = jobForm["job-company"].value.trim();
+  const role = jobForm["job-role"].value.trim();
+  const status = jobForm["job-status"].value;
 
-  try {
-    await fetch(API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ company, role, status }),
-    });
+  await fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ company, role, status }),
+  });
 
-    modal.classList.remove("show");
-    jobForm.reset();
-    loadJobs();
-
-  } catch {
-    alert("Failed to add job");
-  }
+  modal.classList.remove("show");
+  jobForm.reset();
+  loadJobs();
 });
 
-/* ================= DELETE & EDIT HANDLERS ================= */
+/* ================= DELETE & EDIT ================= */
 
 document.addEventListener("click", async (e) => {
 
-  /* DELETE */
   if (e.target.classList.contains("delete-btn")) {
-    const jobId = e.target.dataset.id;
     if (!confirm("Delete this job?")) return;
 
-    await fetch(`${API_URL}/${jobId}`, {
+    await fetch(`${API_URL}/${e.target.dataset.id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -124,7 +142,6 @@ document.addEventListener("click", async (e) => {
     loadJobs();
   }
 
-  /* EDIT */
   if (e.target.classList.contains("edit-btn")) {
     const jobId = e.target.dataset.id;
     const currentStatus = e.target.dataset.status;
@@ -149,9 +166,9 @@ document.addEventListener("click", async (e) => {
   }
 });
 
-/* ================= STATS & COUNTERS ================= */
+/* ================= DASHBOARD STATS ================= */
 
-function updateStats(jobs) {
+function updateDashboardStats(jobs) {
   const stats = {
     total: jobs.length,
     Wishlist: 0,
@@ -161,76 +178,126 @@ function updateStats(jobs) {
     Rejected: 0,
   };
 
-  jobs.forEach(job => stats[job.status]++);
+  jobs.forEach(j => stats[j.status]++);
 
-  const counters = document.querySelectorAll(".counter");
-  const values = [
-    stats.total,
-    stats.Wishlist,
-    stats.Applied,
-    stats.Interview,
-    stats.Offer,
-    stats.Rejected,
-  ];
-
-  counters.forEach((el, i) => animateCounter(el, values[i]));
-
-
+  const values = Object.values(stats);
+  document.querySelectorAll(".counter").forEach((el, i) => {
+    el.textContent = values[i] || 0;
+  });
 }
 
-function animateCounter(el, target) {
-  el.textContent = "0";
-  let count = 0;
-  const step = Math.max(700 / (target || 1), 40);
+/* ================= ANALYTICS ================= */
 
-  const tick = () => {
-    count++;
-    el.textContent = count;
-    if (count < target) setTimeout(tick, step);
-    else el.textContent = target;
-  };
-
-  tick();
+function buildTimeline(jobs) {
+  const map = {};
+  jobs.forEach(j => {
+    const d = new Date(j.updatedAt || j.createdAt).toISOString().split("T")[0];
+    map[d] ??= { Applied: 0, Interview: 0, Offer: 0, Rejected: 0 };
+    map[d][j.status]++;
+  });
+  return map;
 }
 
-/* ================= CHARTS ================= */
+function renderTrendChart(jobs) {
+  if (!jobs.length) return;
 
-let statusChart, pieChart;
+  const timeline = buildTimeline(jobs);
+  const dates = Object.keys(timeline).sort();
 
-function renderCharts(stats) {
-  const labels = ["Wishlist", "Applied", "Interview", "Offer", "Rejected"];
-  const data = [
-    stats.Wishlist,
-    stats.Applied,
-    stats.Interview,
-    stats.Offer,
-    stats.Rejected,
-  ];
+  const cumulative = { Applied: [], Interview: [], Offer: [], Rejected: [] };
+  const running = { Applied: 0, Interview: 0, Offer: 0, Rejected: 0 };
 
-  if (statusChart) statusChart.destroy();
-  if (pieChart) pieChart.destroy();
-
-  statusChart = new Chart(document.getElementById("statusChart"), {
-    type: "bar",
-    data: {
-      labels,
-      datasets: [{
-        label: "Applications",
-        data,
-        backgroundColor: ["#a78bfa", "#60a5fa", "#facc15", "#4ade80", "#f87171"],
-      }],
-    },
-    options: { plugins: { legend: { display: false } } },
+  dates.forEach(d => {
+    Object.keys(running).forEach(k => {
+      running[k] += timeline[d][k];
+      cumulative[k].push(running[k]);
+    });
   });
 
-  pieChart = new Chart(document.getElementById("pieChart"), {
-    type: "pie",
+  trendChart?.destroy();
+
+  trendChart = new Chart(document.getElementById("trendChart"), {
+    type: "line",
     data: {
-      labels,
-      datasets: [{
-        data,
-        backgroundColor: ["#a78bfa", "#60a5fa", "#facc15", "#4ade80", "#f87171"],
-      }],
+      labels: dates,
+      datasets: [
+        { label: "Applied", data: cumulative.Applied, borderColor: "#60a5fa", tension: 0.4 },
+        { label: "Interview", data: cumulative.Interview, borderColor: "#facc15", tension: 0.4 },
+        { label: "Offer", data: cumulative.Offer, borderColor: "#4ade80", tension: 0.4 },
+        { label: "Rejected", data: cumulative.Rejected, borderColor: "#f87171", tension: 0.4 },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: "#e5e7eb" } },
+      },
+      scales: {
+        x: { ticks: { color: "#c7d2fe" } },
+        y: { beginAtZero: true, ticks: { color: "#c7d2fe" } },
+      },
     },
   });
 }
+
+function updateAnalyticsCards(jobs) {
+  const total = jobs.length;
+  const rejected = jobs.filter(j => j.status === "Rejected").length;
+  const offers = jobs.filter(j => j.status === "Offer").length;
+  const active = jobs.filter(j => ["Applied", "Interview"].includes(j.status)).length;
+
+  totalApps.textContent = total;
+  totalOffers.textContent = offers;
+  rejectionRate.textContent = total ? Math.round((rejected / total) * 100) + "%" : "0%";
+  activePipeline.textContent = active;
+}
+
+function updateInsight(jobs) {
+  analyticsInsight.textContent =
+    jobs.some(j => j.status === "Offer")
+      ? `Great work! You received ${jobs.filter(j => j.status === "Offer").length} offer(s).`
+      : "Keep applying — progress builds momentum.";
+}
+
+/* ================= SIDEBAR NAV ================= */
+
+navLinks.forEach(link => {
+  link.addEventListener("click", () => {
+    navLinks.forEach(l => l.classList.remove("active"));
+    link.classList.add("active");
+
+    if (link.textContent.trim() === "Analytics") {
+      dashboardView.classList.add("hidden");
+      analyticsView.classList.remove("hidden");
+      pageTitle.textContent = "Analytics";
+      addJobBtn.style.display = "none";
+
+      updateAnalyticsCards(allJobs);
+      updateInsight(allJobs);
+      setTimeout(() => renderTrendChart(allJobs), 100);
+    }
+
+    if (link.textContent.trim() === "Dashboard") {
+      analyticsView.classList.add("hidden");
+      dashboardView.classList.remove("hidden");
+      pageTitle.textContent = "Dashboard";
+      addJobBtn.style.display = "inline-block";
+    }
+  });
+});
+
+/* ================= CURSOR GLOW ================= */
+
+const body = document.querySelector(".dashboard-body");
+
+document.addEventListener("mousemove", (e) => {
+  const x = (e.clientX / innerWidth) * 100;
+  const y = (e.clientY / innerHeight) * 100;
+
+  body.style.background = `
+    radial-gradient(circle at ${x}% ${y}%, rgba(109,93,252,0.18), transparent 40%),
+    radial-gradient(circle at bottom right, #2563eb 0%, transparent 40%),
+    linear-gradient(180deg, #05070f, #0b0f1a)
+  `;
+});
