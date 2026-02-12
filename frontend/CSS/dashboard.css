@@ -396,11 +396,7 @@ canvas {
   height: 100%;
 }
 
-#analytics-view {
-  display: flex;
-  flex-direction: column;
-  gap: 26px;
-}
+
 
 /* KPI CARDS */
 .analytics-cards {
@@ -458,11 +454,22 @@ canvas {
 /* common view style */
 .view-section {
   width: 100%;
-  height: calc(100vh - 160px); /* header + padding adjust */
+  flex: 1;                 /* 🔥 IMPORTANT */
   overflow-y: auto;
 }
 
 /* hidden view */
 .hidden {
   display: none !important;
+}
+
+.header-actions {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.header-actions.hide-search input {
+  visibility: hidden;
+  pointer-events: none;
 }

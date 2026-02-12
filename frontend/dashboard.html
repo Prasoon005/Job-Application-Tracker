@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="./CSS/dashboard.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./CSS/analytics.css" />
-
+  <link rel="stylesheet" href="./CSS/application.css" />
 </head>
 
 <body class="dashboard-body">
@@ -25,7 +25,6 @@
           <img src="https://i.pravatar.cc/100" class="avatar" />
           <h4 id="user-name">User Name</h4>
           <span id="user-email">user@email.com</span>
-
         </div>
 
         <nav>
@@ -43,7 +42,7 @@
     <!-- ================= MAIN BOARD ================= -->
     <main class="board glass">
 
-      <!-- HEADER -->
+      <!-- ================= HEADER ================= -->
       <div class="board-header">
         <h2 id="page-title">Dashboard</h2>
 
@@ -64,10 +63,59 @@
         </div>
       </section>
 
+      <!-- ================= APPLICATIONS VIEW ================= -->
+      <section id="applications-view" class="hidden">
+
+        <!-- TOP ROW -->
+        <div class="applications-top">
+
+          <!-- LEFT SIDE -->
+          <div class="left-info">
+            <h3>All Applications</h3>
+
+            <!-- APPLY RESOURCES -->
+            <div class="apply-resources glass">
+              <h4>Apply Resources</h4>
+
+              <div class="resource-links">
+                <a id="resume-link" target="_blank">📄 Resume</a>
+                <a id="portfolio-link" target="_blank">🌐 Portfolio</a>
+                <a id="linkedin-link" target="_blank">🔗 LinkedIn</a>
+                <a id="contact-link">✉ Contact</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT SIDE -->
+          <div class="applications-header">
+            <input
+              type="text"
+              id="search-applications"
+              placeholder="Search company / role..."
+            />
+
+            <select id="filter-status">
+              <option value="All">All</option>
+              <option value="Wishlist">Wishlist</option>
+              <option value="Applied">Applied</option>
+              <option value="Interview">Interview</option>
+              <option value="Offer">Offer</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+          </div>
+
+        </div>
+
+        <!-- APPLICATION LIST -->
+        <div class="applications-list" id="applications-list">
+          <!-- Jobs dynamically inserted here -->
+        </div>
+
+      </section>
+
       <!-- ================= ANALYTICS VIEW ================= -->
       <section id="analytics-view" class="view-section hidden">
 
-        <!-- KPI CARDS -->
         <div class="analytics-cards">
           <div class="analytics-card glass">
             <span>Total Applications</span>
@@ -90,13 +138,11 @@
           </div>
         </div>
 
-        <!-- LINE GRAPH -->
         <div class="analytics-graph glass">
           <h3>Application Trend</h3>
           <canvas id="trendChart"></canvas>
         </div>
 
-        <!-- INSIGHT -->
         <div class="analytics-insight glass">
           <p id="analyticsInsight">
             Your application performance will appear here.
@@ -104,6 +150,7 @@
         </div>
 
       </section>
+
     </main>
 
     <!-- ================= STATS ================= -->
@@ -117,6 +164,7 @@
       <div class="stat-item"><span class="dot green"></span><span>Offers</span><strong class="counter">0</strong></div>
       <div class="stat-item"><span class="dot red"></span><span>Rejected</span><strong class="counter">0</strong></div>
     </aside>
+
   </div>
 
   <!-- ================= ADD JOB MODAL ================= -->
@@ -144,8 +192,10 @@
     </div>
   </div>
 
-  <!-- SCRIPTS -->
+  <!-- ================= SCRIPTS ================= -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="js/dashboard.js"></script>
+  <script src="js/application.js"></script>
+
 </body>
 </html>

@@ -1,0 +1,155 @@
+/* ================= APPLICATIONS ================= */
+
+#applications-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;              /* IMPORTANT for scroll */
+  gap: 20px;
+}
+
+/* ================= HEADER ================= */
+
+.applications-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;          /* Header stays visible */
+  top: 0;
+  z-index: 10;
+  padding-bottom: 10px;
+  background: transparent;
+  gap:14px;
+}
+
+.applications-header h3 {
+  font-size: 20px;
+  color: #e0e7ff;
+}
+
+/* ================= SEARCH & FILTER ================= */
+
+#search-applications,
+#filter-status {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  outline: none;
+}
+
+#search-applications {
+  min-width: 220px;
+}
+
+#search-applications::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ================= APPLICATION LIST (SCROLLABLE) ================= */
+
+.applications-list {
+  flex: 1;                   /* Takes remaining height */
+  overflow-y: auto;          /* ENABLE SCROLL */
+  padding-right: 8px;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+/* Custom scrollbar */
+.applications-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.applications-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.applications-list::-webkit-scrollbar-thumb {
+  background: rgba(109, 93, 252, 0.6);
+  border-radius: 6px;
+}
+
+/* ================= APPLICATION CARD ================= */
+
+.application-card {
+  background: rgba(255, 255, 255, 0.12);
+  padding: 18px;
+  border-radius: 18px;
+  transition: 0.35s ease;
+  cursor: pointer;
+}
+
+.application-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(109, 93, 252, 0.45);
+}
+
+.application-card h4 {
+  margin-bottom: 6px;
+  color: #f8fafc;
+}
+
+.application-card small {
+  opacity: 0.75;
+  color: #e5e7eb;
+}
+
+/* ================= APPLY RESOURCES ================= */
+
+.apply-resources {
+  padding: 16px 18px;
+  border-radius: 18px;
+  margin-bottom: 14px;
+}
+
+.apply-resources h4 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #e0e7ff;
+}
+
+.resource-links {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.resource-links a {
+  background: rgba(255, 255, 255, 0.12);
+  padding: 8px 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: white;
+  font-size: 14px;
+  transition: 0.3s ease;
+}
+
+.resource-links a:hover {
+  background: rgba(109, 93, 252, 0.4);
+  transform: translateY(-2px);
+}
+
+/* ================= APPLICATIONS TOP LAYOUT ================= */
+
+.applications-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+/* Left section */
+.left-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Apply resources now part of normal flow */
+.apply-resources {
+  position: static; /* 🔥 IMPORTANT FIX */
+  max-width: 420px;
+}

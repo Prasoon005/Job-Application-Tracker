@@ -18,7 +18,24 @@ if (userNameEl && userEmailEl) {
   userNameEl.textContent = user.name || "User";
   userEmailEl.textContent = user.email || "";
 }
+/* ================= APPLY RESOURCES ================= */
 
+const applyResources = {
+  resume: "https://drive.google.com/file/d/XXXX/view",
+  portfolio: "https://your-portfolio-site.com",
+  linkedin: "https://linkedin.com/in/yourusername",
+  email: "your@email.com",
+};
+
+const resumeLink = document.getElementById("resume-link");
+const portfolioLink = document.getElementById("portfolio-link");
+const linkedinLink = document.getElementById("linkedin-link");
+const contactLink = document.getElementById("contact-link");
+
+if (resumeLink) resumeLink.href = applyResources.resume;
+if (portfolioLink) portfolioLink.href = applyResources.portfolio;
+if (linkedinLink) linkedinLink.href = applyResources.linkedin;
+if (contactLink) contactLink.href = `mailto:${applyResources.email}`;
 /* ================= GLOBAL STATE ================= */
 
 let allJobs = [];
@@ -28,15 +45,23 @@ let trendChart = null;
 
 const dashboardView = document.getElementById("dashboard-view");
 const analyticsView = document.getElementById("analytics-view");
+const applicationsView = document.getElementById("applications-view");
+
 const pageTitle = document.getElementById("page-title");
 const addJobBtn = document.getElementById("add-job-btn");
-const navLinks = document.querySelectorAll(".sidebar nav a");
 
-/* Default View */
+const navLinks = document.querySelectorAll(".sidebar nav a");
+const headerActions = document.querySelector(".header-actions");
+
+/* ================= DEFAULT VIEW ================= */
+
 dashboardView.classList.remove("hidden");
 analyticsView.classList.add("hidden");
+applicationsView.classList.add("hidden");
+
 pageTitle.textContent = "Dashboard";
 addJobBtn.style.display = "inline-block";
+headerActions.classList.remove("hide-search");
 
 /* ================= LOGOUT ================= */
 
@@ -65,12 +90,10 @@ async function loadJobs() {
 
     allJobs = await res.json();
 
-    /* Clear old cards */
     Object.values(columns).forEach(col =>
       col.querySelectorAll(".job-card").forEach(card => card.remove())
     );
 
-    /* Render cards */
     allJobs.forEach(job => {
       const card = document.createElement("div");
       card.className = "job-card";
@@ -90,7 +113,6 @@ async function loadJobs() {
     });
 
     updateDashboardStats(allJobs);
-
   } catch (err) {
     console.error("Dashboard Error:", err.message);
   }
@@ -130,7 +152,6 @@ jobForm.addEventListener("submit", async (e) => {
 /* ================= DELETE & EDIT ================= */
 
 document.addEventListener("click", async (e) => {
-
   if (e.target.classList.contains("delete-btn")) {
     if (!confirm("Delete this job?")) return;
 
@@ -247,17 +268,20 @@ function updateAnalyticsCards(jobs) {
   const offers = jobs.filter(j => j.status === "Offer").length;
   const active = jobs.filter(j => ["Applied", "Interview"].includes(j.status)).length;
 
-  totalApps.textContent = total;
-  totalOffers.textContent = offers;
-  rejectionRate.textContent = total ? Math.round((rejected / total) * 100) + "%" : "0%";
-  activePipeline.textContent = active;
+  document.getElementById("totalApps").textContent = total;
+  document.getElementById("totalOffers").textContent = offers;
+  document.getElementById("rejectionRate").textContent =
+    total ? Math.round((rejected / total) * 100) + "%" : "0%";
+  document.getElementById("activePipeline").textContent = active;
 }
 
 function updateInsight(jobs) {
-  analyticsInsight.textContent =
-    jobs.some(j => j.status === "Offer")
-      ? `Great work! You received ${jobs.filter(j => j.status === "Offer").length} offer(s).`
-      : "Keep applying — progress builds momentum.";
+  const insightEl = document.getElementById("analyticsInsight");
+  const offers = jobs.filter(j => j.status === "Offer").length;
+
+  insightEl.textContent = offers
+    ? `🎉 Congrats! You’ve received ${offers} offer${offers > 1 ? "s" : ""}.`
+    : "Keep applying — progress builds momentum.";
 }
 
 /* ================= SIDEBAR NAV ================= */
@@ -267,22 +291,40 @@ navLinks.forEach(link => {
     navLinks.forEach(l => l.classList.remove("active"));
     link.classList.add("active");
 
-    if (link.textContent.trim() === "Analytics") {
-      dashboardView.classList.add("hidden");
+    const page = link.textContent.trim();
+
+    dashboardView.classList.add("hidden");
+    analyticsView.classList.add("hidden");
+    applicationsView.classList.add("hidden");
+
+    /* DASHBOARD */
+    if (page === "Dashboard") {
+      dashboardView.classList.remove("hidden");
+      pageTitle.textContent = "Dashboard";
+      addJobBtn.style.display = "inline-block";
+      headerActions.classList.remove("hide-search");
+    }
+
+    /* APPLICATIONS */
+    if (page === "Applications") {
+      applicationsView.classList.remove("hidden");
+      pageTitle.textContent = "Applications";
+      addJobBtn.style.display = "none";
+      headerActions.classList.add("hide-search");
+
+      renderApplications(allJobs);
+    }
+
+    /* ANALYTICS */
+    if (page === "Analytics") {
       analyticsView.classList.remove("hidden");
       pageTitle.textContent = "Analytics";
       addJobBtn.style.display = "none";
+      headerActions.classList.add("hide-search");
 
       updateAnalyticsCards(allJobs);
       updateInsight(allJobs);
       setTimeout(() => renderTrendChart(allJobs), 100);
-    }
-
-    if (link.textContent.trim() === "Dashboard") {
-      analyticsView.classList.add("hidden");
-      dashboardView.classList.remove("hidden");
-      pageTitle.textContent = "Dashboard";
-      addJobBtn.style.display = "inline-block";
     }
   });
 });
